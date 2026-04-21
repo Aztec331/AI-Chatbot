@@ -3,13 +3,34 @@ import { useState } from 'react';
 
 export default function App() {
 
-  //store role(your or AI) and message(your message or AI's response) in an array of objects
-  const [messages, setMessages] = useState([]);
+  //chats stores all conversations, each conversation has its own messages
+  const [chat, setChat] = useState([
+    {
+      id: 1,
+      title: "New Chat",
+      messages: [],
+    }
 
-  //store the current input value in a state variable
+  ])
+
+  //currentChatId decides which chat is open in the main chat area
+  const [currentChatId, setCurrentChatId] = useState(1);
+
+  const currentChat = chat.find( (chat) => chat.id === currentChatId );
+  const messages = currentChat ? currentChat.messages : [];
+
+  //store the current input value what user is typing in the input field
   const [input, setInput] = useState("");
   
 
+  //
+  const addMessageToChat = (chatId, message) =>{}
+
+
+
+
+  //Sends user input to the backend and updates messages with the response.
+  //Runs when we press the Enter key in the input field.
   const sendMessage = async () => {
 
   if (!input.trim()) return;
@@ -19,7 +40,7 @@ export default function App() {
   // show user message
   setMessages((prev) => [
     ...prev,
-    { role: "You :", text: userText },
+    { role: "user", content: userText },
   ]);
 
   setInput("");
@@ -41,14 +62,16 @@ export default function App() {
     // show AI response
     setMessages((prev) => [
       ...prev,
-      { role: "Ollama: ", text: data.response },
+      { role: "assistant", content: data.response },
     ]);
 
-  } catch {
+  } 
+  
+  catch {
 
     setMessages((prev) => [
       ...prev,
-      { role: "Ollama: ", text: "Error connecting to server" },
+      { role: "assistant", content: "Error connecting to server" },
     ]);
 
   }
@@ -68,16 +91,30 @@ export default function App() {
 
       <img className='w-12 cursor-pointer' src={logo} alt="Logo" />
 
+      <button 
+      onClick={createNewChat}
+      className='mt-4 w-full rounded p-2 cursor-pointer text-left hover:bg-gray-900 bg-gray-700'>
+      + New Chat
+      </button>
+
       <h3 className='text-lg font-semibold mt-3'>Recent Chats</h3>
 
-      <div className='overflow-x-hidden overflow-y-auto max-h-[calc(100vh-80px)] p-1 space-y-2'>
+      <div className='overflow-x-hidden overflow-y-auto h-100 p-1 space-y-2'>
 
-      <div className="p-1 bg-gray-700 rounded cursor-pointer hover:bg-gray-900">Chat 1</div>
-      <div className="p-1 bg-gray-700 rounded cursor-pointer hover:bg-gray-900">Chat 2</div>
-      <div className="p-1 bg-gray-700 rounded cursor-pointer hover:bg-gray-900">Chat 3</div>
-      <div className="p-1 bg-gray-700 rounded cursor-pointer hover:bg-gray-900">Chat 4</div>
-      <div className="p-1 bg-gray-700 rounded cursor-pointer hover:bg-gray-900">Chat 5</div>
-      <div className="p-1 bg-gray-700 rounded cursor-pointer hover:bg-gray-900">Chat 6</div>
+        {chats.map( (chat) => (
+
+          <div
+          key = {chat.id}
+          className="p-3 bg-gray-700 rounded cursor-pointer hover:bg-gray-900"
+          >
+          
+          {chat.title}
+
+          </div>
+
+
+
+        ))}
 
       </div>
 
@@ -101,7 +138,12 @@ export default function App() {
 
         { messages.map( (msg,i) => (
           <div key={i} className=' mb-2 flex justify-center'>
-              <strong>{msg.role}</strong>{msg.text}
+
+              <strong>
+                {msg.role === "user" ? "You: " : "Ollama: "}
+              </strong>
+              {msg.content}
+          
           </div>
           
         ))}
