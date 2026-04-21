@@ -30,7 +30,7 @@ export default function App0() {
       messages: [],
     };
 
-    setChats((prevChats) => [newChat, ...prevChats]);
+    setChats( (prevChats) => [newChat, ...prevChats]);
     setCurrentChatId(newChat.id);
     setInput("");
     

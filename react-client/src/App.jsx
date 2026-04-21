@@ -4,7 +4,7 @@ import { useState } from 'react';
 export default function App() {
 
   //chats stores all conversations, each conversation has its own messages
-  const [chat, setChat] = useState([
+  const [chats, setChats] = useState([
     {
       id: 1,
       title: "New Chat",
@@ -16,18 +16,31 @@ export default function App() {
   //currentChatId decides which chat is open in the main chat area
   const [currentChatId, setCurrentChatId] = useState(1);
 
-  const currentChat = chat.find( (chat) => chat.id === currentChatId );
+  const currentChat = chats.find( (chat) => chat.id === currentChatId );
   const messages = currentChat ? currentChat.messages : [];
 
   //store the current input value what user is typing in the input field
   const [input, setInput] = useState("");
   
 
+  const createNewChat = () =>{
+
+    const newChat ={
+      id: Date.now(),
+      title: "New Chat",
+      messages:[]
+    };
+
+    setChats( (prevChats) => [newChat, ...prevChats] );
+    setCurrentChatId(newChat.id);
+
+
+
+  }
+
+
   //
   const addMessageToChat = (chatId, message) =>{}
-
-
-
 
   //Sends user input to the backend and updates messages with the response.
   //Runs when we press the Enter key in the input field.
@@ -38,6 +51,7 @@ export default function App() {
   const userText = input;
 
   // show user message
+  //REPLACE WITH addMessageToChat function 
   setMessages((prev) => [
     ...prev,
     { role: "user", content: userText },
@@ -59,7 +73,7 @@ export default function App() {
 
     const data = await res.json();
 
-    // show AI response
+    //REPLACE with addMessageToChat function 
     setMessages((prev) => [
       ...prev,
       { role: "assistant", content: data.response },
@@ -107,7 +121,7 @@ export default function App() {
           key = {chat.id}
           className="p-3 bg-gray-700 rounded cursor-pointer hover:bg-gray-900"
           >
-          
+      
           {chat.title}
 
           </div>
