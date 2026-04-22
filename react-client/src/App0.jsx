@@ -22,6 +22,8 @@ export default function App0() {
   const [input, setInput] = useState("");
 
 
+  //creates a new chat object with unique id, default title, and empty messages array.
+  //sets CurrentChatId to the new chat's id, so the new chat opens immediately and looks brigter than other chats
   const createNewChat = () => {
 
     const newChat = {

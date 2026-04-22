@@ -1,30 +1,27 @@
 const chats = [
   {
     id: 1,
-    title: "Python Chat",
-    messages: ["What is Python?", "Python is a programming language."],
+    title: "New Chat",
+    messages: [
+      { user: "Hello" },
+      { assistant: "Hi there!" },
+      { user: "How are you?" },
+      { assistant: "I'm doing well, thank you!" },
+    ],
   },
   {
     id: 2,
-    title: "Java Chat",
-    messages: ["What is Spring Boot?", "Spring Boot helps build Java apps."],
+    title: "React Doubts",
+    messages: [{ user: "What is map?" }],
   },
 ];
 
-const currentChatId = 2;
+//function to find the chat by id and add a new message to it
+const addMessageToChat = (chatId, message)=>{
 
-const currentChat = chats.find( (chat) => chat.id === currentChatId );
+  const updatedChats 
 
 
-console.log("Current chat:");
-console.log(currentChat);
 
-console.log("-------------------------------------------------------------------------")
 
-console.log("Current chat just becomes a simple object then ");     
-
-const messages = currentChat ? currentChat.messages:[];
-console.log("-------------------------------------------------------------------------")
-console.log("Messages:");
-console.log(messages);
-
+}

@@ -41,7 +41,13 @@ export default function App() {
 
 
   //
-  const addMessageToChat = (chatId, message) =>{}
+  const addMessageToChat = (chatId, message) =>{
+
+    console.log(chatId);
+    console.log(message);
+
+
+  }
 
   //Sends user input to the backend and updates messages with the response.
   //Runs when we press the Enter key in the input field.
@@ -53,10 +59,16 @@ export default function App() {
 
   // show user message
   //REPLACE WITH addMessageToChat function 
-  setMessages((prev) => [
-    ...prev,
-    { role: "user", content: userText },
-  ]);
+  // setMessages((prev) => [
+  //   ...prev,
+  //   { role: "user", content: userText },
+  // ]);
+
+  addMessageToChat(
+    currentChatId,
+    { role: "user", content: userText }
+
+  )
 
   setInput("");
 
@@ -123,7 +135,6 @@ export default function App() {
           onClick={ () => setCurrentChatId(chat.id) }
           className={`p-3 rounded cursor-pointer hover:bg-gray-900
           ${ chat.id === currentChatId ? "bg-gray-500" : "bg-gray-700" }`}
-
           >
       
           {chat.title}
