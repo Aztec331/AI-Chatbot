@@ -136,8 +136,7 @@ export default function App0() {
                 key={chat.id}
                 onClick={() => setCurrentChatId(chat.id)}
                 className={`p-2 rounded cursor-pointer hover:bg-gray-800 ${
-                  chat.id === currentChatId ? "bg-gray-600" : "bg-gray-700"
-                }`}
+                  chat.id === currentChatId ? "bg-gray-600" : "bg-gray-700"}`}
               >
                 <div className="truncate font-medium">{chat.title}</div>
                 <div className="text-xs text-gray-300">

@@ -23,6 +23,8 @@ export default function App() {
   const [input, setInput] = useState("");
   
 
+  //creates a new chat object with unique id, default title, and empty messages array.
+  //sets CurrentChatId to the new chat's id, so the new chat opens immediately and looks brigter than other chats
   const createNewChat = () =>{
 
     const newChat ={
@@ -33,8 +35,7 @@ export default function App() {
 
     setChats( (prevChats) => [newChat, ...prevChats] );
     setCurrentChatId(newChat.id);
-
-
+    setInput("");
 
   }
 
@@ -119,14 +120,15 @@ export default function App() {
 
           <div
           key = {chat.id}
-          className="p-3 bg-gray-700 rounded cursor-pointer hover:bg-gray-900"
+          onClick={ () => setCurrentChatId(chat.id) }
+          className={`p-3 rounded cursor-pointer hover:bg-gray-900
+          ${ chat.id === currentChatId ? "bg-gray-500" : "bg-gray-700" }`}
+
           >
       
           {chat.title}
 
           </div>
-
-
 
         ))}
 
