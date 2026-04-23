@@ -5,6 +5,7 @@ export default function App() {
 
   //chats stores all conversations, each conversation has its own messages
   const [chats, setChats] = useState([
+    
     {
       id: 1,
       title: "New Chat",
@@ -40,14 +41,25 @@ export default function App() {
   }
 
 
-  //
+  //Find chat by id and add a new message to it.
   const addMessageToChat = (chatId, message) =>{
 
-    console.log(chatId);
-    console.log(message);
+    setChats( (prevChats) => 
+      prevChats.map( (chat) =>{
 
+        if(chat.id !== chatId){ return chat; }
 
+        return{
+          ...chat,
+          messages:[...chat.messages, message]
+
+        };
+
+      })  
+    )
   }
+
+
 
   //Sends user input to the backend and updates messages with the response.
   //Runs when we press the Enter key in the input field.
@@ -56,18 +68,11 @@ export default function App() {
   if (!input.trim()) return;
 
   const userText = input;
-
-  // show user message
-  //REPLACE WITH addMessageToChat function 
-  // setMessages((prev) => [
-  //   ...prev,
-  //   { role: "user", content: userText },
-  // ]);
+  const chatIdAtSendTime = currentChatId;
 
   addMessageToChat(
-    currentChatId,
+    chatIdAtSendTime,
     { role: "user", content: userText }
-
   )
 
   setInput("");
@@ -86,20 +91,17 @@ export default function App() {
 
     const data = await res.json();
 
-    //REPLACE with addMessageToChat function 
-    setMessages((prev) => [
-      ...prev,
-      { role: "assistant", content: data.response },
-    ]);
+    addMessageToChat(chatIdAtSendTime,
+      { role: "assistant", content: data.response }
+    )
 
   } 
   
   catch {
 
-    setMessages((prev) => [
-      ...prev,
-      { role: "assistant", content: "Error connecting to server" },
-    ]);
+    addMessageToChat(chatIdAtSendTime,
+      { role: "assistant", content: "Error connecting to server" }
+    )
 
   }
 
@@ -137,7 +139,8 @@ export default function App() {
           ${ chat.id === currentChatId ? "bg-gray-500" : "bg-gray-700" }`}
           >
       
-          {chat.title}
+          {chat.title}<br/>
+          {chat.id}
 
           </div>
 

@@ -1,27 +1,4 @@
-const chats = [
-  {
-    id: 1,
-    title: "New Chat",
-    messages: [
-      { user: "Hello" },
-      { assistant: "Hi there!" },
-      { user: "How are you?" },
-      { assistant: "I'm doing well, thank you!" },
-    ],
-  },
-  {
-    id: 2,
-    title: "React Doubts",
-    messages: [{ user: "What is map?" }],
-  },
-];
+let name = "Aditya Babar"
 
-//function to find the chat by id and add a new message to it
-const addMessageToChat = (chatId, message)=>{
-
-  const updatedChats 
-
-
-
-
-}
+console.log(name.length)
+console.log( name.slice(0,6) )

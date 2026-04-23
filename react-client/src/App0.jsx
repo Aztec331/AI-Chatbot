@@ -45,8 +45,9 @@ export default function App0() {
       prevChats.map((chat) => {
         if (chat.id !== chatId) return chat;
 
+        //shouldUpdateTitle is true if both condtions are true
         const shouldUpdateTitle =
-          chat.title === "New Chat" && message.role === "user";
+        chat.title === "New Chat" && message.role === "user";
 
         return {
           ...chat,
@@ -55,6 +56,7 @@ export default function App0() {
             : chat.title,
           messages: [...chat.messages, message],
         };
+
       })
     );
   };
