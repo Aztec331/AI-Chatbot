@@ -5,7 +5,7 @@ export default function App() {
 
   //chats stores all conversations, each conversation has its own messages
   const [chats, setChats] = useState([
-    
+
     {
       id: 1,
       title: "New Chat",
@@ -49,8 +49,17 @@ export default function App() {
 
         if(chat.id !== chatId){ return chat; }
 
+        const shouldUpdateTitle=
+        chat.title === "New Chat" && message.role === "user";
+
         return{
           ...chat,
+
+          title: shouldUpdateTitle
+          ? message.content.slice(0,28) || "New Chat"
+          : chat.title,
+
+          
           messages:[...chat.messages, message]
 
         };

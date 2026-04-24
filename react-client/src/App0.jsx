@@ -41,6 +41,7 @@ export default function App0() {
 
   // function to add a message to a specific chat by its ID
   const addMessageToChat = (chatId, message) => {
+
     setChats((prevChats) =>
       prevChats.map((chat) => {
         if (chat.id !== chatId) return chat;
@@ -51,14 +52,17 @@ export default function App0() {
 
         return {
           ...chat,
+
           title: shouldUpdateTitle
             ? message.content.slice(0, 28) || "New Chat"
             : chat.title,
+            
           messages: [...chat.messages, message],
         };
 
       })
     );
+
   };
 
 
