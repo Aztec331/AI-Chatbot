@@ -3,35 +3,71 @@ const chats = [
     id: 1,
     title: "New Chat",
     messages: [
-      { user: "Hello" },
-      { assistant: "Hi there!" },
-      { user: "How are you?" },
-      { assistant: "I'm doing well, thank you!" },
+      { role: "user", content: "Hello, how are you?" },
+      {
+        role: "assistant",
+        content: "I'm good, thank you! How can I assist you today?",
+      },
     ],
   },
   {
     id: 2,
-    title: "React Doubts",
-    messages: [{ user: "What is map?" }],
+    title: "Project Discussion",
+    messages: [
+      { role: "user", content: "Can you help me build a chatbot UI?" },
+      {
+        role: "assistant",
+        content: "Yes, we can start with sidebar, chat area, and input box.",
+      },
+      { role: "user", content: "Nice, show me the folder structure too." },
+    ],
+  },
+  {
+    id: 3,
+    title: "Bug Fix Chat",
+    messages: [
+      { role: "user", content: "My messages are not rendering." },
+      {
+        role: "assistant",
+        content: "Check whether you are mapping over the correct messages array.",
+      },
+    ],
+  },
+  {
+    id: 4,
+    title: "Long Chat Example",
+    messages: [
+      { role: "user", content: "Message 1" },
+      { role: "assistant", content: "Message 2" },
+      { role: "user", content: "Message 3" },
+      { role: "assistant", content: "Message 4" },
+      { role: "user", content: "Message 5" },
+      { role: "assistant", content: "Message 6" },
+      { role: "user", content: "Message 7" },
+      { role: "assistant", content: "Message 8" },
+      { role: "user", content: "Message 9" },
+      { role: "assistant", content: "Message 10" },
+      { role: "user", content: "Message 11" },
+      { role: "assistant", content: "Message 12" },
+      { role: "user", content: "Message 13" },
+      { role: "assistant", content: "Message 14" },
+      { role: "user", content: "Message 15" },
+    ],
   },
 ];
 
-const addMessageToChat = (chatId, message) => {
-  
-  const updatedChats = chats.map((chat) => {
-    if (chat.id !== chatId) return chat;
+const currentChatId = 2;
 
-    return {
-      ...chat,
-      messages: [...chat.messages, message],
-    };
-  });
+const currentChat = chats.find( (chat) => chat.id=== currentChatId );
 
-  return updatedChats;
-};
+const messages = currentChat ? currentChat.messages : [];
 
-const allChats = addMessageToChat(1, {
-  assistant: "This new message was added only to chat id 1.",
-});
+const chatIdAtSendTime = 4;
 
-console.log(allChats);
+const chatAtSendTime = chats.find( (chat) =>  chat.id === chatIdAtSendTime );
+
+const previousMessages = chatAtSendTime ? chatAtSendTime.messages.slice(-10) : [];
+
+
+console.log(previousMessages)
+

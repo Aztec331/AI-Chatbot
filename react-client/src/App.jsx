@@ -42,6 +42,7 @@ export default function App() {
 
 
   //Find chat by id and add a new message to it.
+  // is called inside sendMessage function
   const addMessageToChat = (chatId, message) =>{
 
     setChats( (prevChats) => 
@@ -79,6 +80,11 @@ export default function App() {
   const userText = input;
   const chatIdAtSendTime = currentChatId;
 
+  const chatAtSendTime = chats.find( (chat) => chat.id === chatIdAtSendTime );
+
+  
+
+
   addMessageToChat(
     chatIdAtSendTime,
     { role: "user", content: userText }
@@ -104,6 +110,7 @@ export default function App() {
       { role: "assistant", content: data.response }
     )
 
+
   } 
   
   catch {
@@ -125,13 +132,14 @@ export default function App() {
 
       {/* Sidebar- fixed height, won't scroll with chat */}
       
-      <div className="Child_1 w-64 text-white p-4 bg-gray-900">
+      <div className="Child_1 w-74 text-white p-4 bg-gray-900">
 
       <img className='w-12 cursor-pointer' src={logo} alt="Logo" />
 
       <button 
       onClick={createNewChat}
-      className='mt-4 w-full rounded p-2 cursor-pointer text-left hover:bg-gray-900 bg-gray-700'>
+      className='mt-4 w-full rounded p-2 cursor-pointer 
+      text-left hover:bg-gray-900 bg-gray-700'>
       + New Chat
       </button>
 
@@ -148,8 +156,10 @@ export default function App() {
           ${ chat.id === currentChatId ? "bg-gray-500" : "bg-gray-700" }`}
           >
       
-          {chat.title}<br/>
-          {chat.id}
+          {chat.title}
+          <div className="text-xs text-gray-300">
+            {chat.messages.length} messages
+          </div>
 
           </div>
 
@@ -168,7 +178,7 @@ export default function App() {
 
       {/* header */}
       <div className="flex justify-center p-4 border-b">
-        <h1 className="font-semibold">Ollama3</h1>
+        <h1 className="font-semibold">{ currentChat ? currentChat.title: "Ollama"}</h1>
       </div>
 
       {/* Messages Area — scrolls independently, starts from top */}
