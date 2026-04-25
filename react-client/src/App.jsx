@@ -57,7 +57,7 @@ export default function App() {
           ...chat,
 
           title: shouldUpdateTitle
-          ? message.content.slice(0,28) || "New Chat"
+          ? message.content.slice(0,28)
           : chat.title,
 
           
@@ -78,11 +78,18 @@ export default function App() {
   if (!input.trim()) return;
 
   const userText = input;
+  // take chat id at the time of sendine each message
+  //because user can switch to another chat while waiting for response from backend
   const chatIdAtSendTime = currentChatId;
 
   const chatAtSendTime = chats.find( (chat) => chat.id === chatIdAtSendTime );
 
-  
+  const previousMessages = chatAtSendTime ? chatAtSendTime.messages.slice(-10) : [];
+
+  const messagesForAI = [
+    ...previousMessages,
+    { role: "user", content: userText }
+  ]
 
 
   addMessageToChat(
@@ -101,7 +108,7 @@ export default function App() {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ message: userText }),
+      body: JSON.stringify({ messages: messagesForAI }),
     });
 
     const data = await res.json();
