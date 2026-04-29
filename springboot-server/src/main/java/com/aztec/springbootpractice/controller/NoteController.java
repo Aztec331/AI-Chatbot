@@ -69,6 +69,7 @@ public class NoteController {
 
     // POST request to send user message to AI
     // URL → http://localhost:8080/api/chat
+    //this method receives this from frontend - { "message": "Hello AI" }
     @PostMapping("/chat")
     public ChatResponse askAI(@RequestBody ChatRequest request){
 
