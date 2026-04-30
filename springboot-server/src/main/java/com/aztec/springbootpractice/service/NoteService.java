@@ -12,6 +12,7 @@ import com.aztec.springbootpractice.repository.NoteRepository;
 import org.springframework.web.client.RestTemplate;
 import com.aztec.springbootpractice.dto.ChatRequest;
 import com.aztec.springbootpractice.dto.ChatResponse;
+import com.aztec.springbootpractice.dto.ChatMessage;
 
 import java.util.List;
 
@@ -64,9 +65,9 @@ public class NoteService {
     noteRepository.deleteById(id);
     }
 
-    // POST request 
-    //this askAI function get pure string message like "How are ya?"
-    public String askAI(String message){
+    // Sends chat messages to the AI API
+    // This askAI function receives a List<ChatMessage>
+    public String askAI(List<ChatMessage> messages){
 
         //creates a tool to call another API
         //we call fastAPI using this
@@ -75,20 +76,19 @@ public class NoteService {
 
         String url = "http://127.0.0.1:8000/chat";
 
-        //these 2 lines convert the String
-        //"Hello AI" -> {"message":"Hello AI"}
-        //create an empty object request and use
-        //.setMessage method to make like this request= {message:null}
-        //hence request object will now have request={message:"Hello AI"}
+        // These lines create a ChatRequest object from the message list
+        // Example:
+        // List<ChatMessage> -> { "messages": [ { "role": "user", "content": "Hello AI" } ] }
         ChatRequest request = new ChatRequest();
-        request.setMessage(message);
+        request.setMessages(messages);
 
         
         //restTemplate.postForObject means send post request to another api
         //url means where to send
-        //request means what to send, request which means -> request={message:"Hello AI"}
-        //ChatResponse.class tell spring convert this JSON ->{"message":"Hello AI"} into ChatResponse object 
-       //JSON is finally coverted to the following below 
+        //request means what to send:
+        //request -> { "messages": [ { "role": "user", "content": "Hello AI" } ] }
+        //ChatResponse.class tells Spring to convert the JSON response into a ChatResponse object
+       //JSON is finally converted to the following below 
         //ChatResponse obj = new ChatResponse();
         //obj.setResponse("You said: Hello AI");
         ChatResponse response = restTemplate.postForObject(url, request , ChatResponse.class);

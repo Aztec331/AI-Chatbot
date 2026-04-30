@@ -1,7 +1,7 @@
 //Controller based class or views.py+urls.py
 
 //Flow is below for entire project
-//Controller → Service → Repository → Database
+//Controller -> Service -> Repository -> Database
 package com.aztec.springbootpractice.controller;
 
 import org.springframework.lang.NonNull;
@@ -15,6 +15,7 @@ import com.aztec.springbootpractice.service.NoteService;
 //AI file imports
 import com.aztec.springbootpractice.dto.ChatRequest;
 import com.aztec.springbootpractice.dto.ChatResponse;
+import com.aztec.springbootpractice.dto.ChatMessage;
 
 import java.util.List;
 
@@ -26,7 +27,7 @@ public class NoteController {
     // Stores a NoteService object (gives methods like createNote(), getAllNotes() )
     // Not used to store data, only to access NoteService methods
     // Type = NoteService (it holds a repository object with methods like save(), findAll())
-    //noteService = pre-filled object with ready-made database methods 👍
+    //noteService = pre-filled object with ready-made database methods
     private final NoteService noteService;
 
     //Constructor for NoteController class
@@ -67,22 +68,24 @@ public class NoteController {
         noteService.deleteNote(id);
     }
 
-    // POST request to send user message to AI
-    // URL → http://localhost:8080/api/chat
-    //this method receives this from frontend - { "message": "Hello AI" }
+    // POST request to send chat messages to AI
+    // URL -> http://localhost:8080/api/chat
+    // This method receives this from frontend:
+    // { "messages": [ { "role": "user", "content": "Hello AI" } ] }
     @PostMapping("/chat")
     public ChatResponse askAI(@RequestBody ChatRequest request){
 
-    // Step 1: Extract user message from JSON
-    // Example incoming JSON: { "message": "Hello AI" }
-    // After conversion → request.getMessage() = "Hello AI"
-    String userMessage = request.getMessage();
+    // Step 1: Extract chat messages from JSON
+    // Example incoming JSON:
+    // { "messages": [ { "role": "user", "content": "Hello AI" } ] }
+    // After conversion -> request.getMessages() = List<ChatMessage>
+    List<ChatMessage> messages = request.getMessages();
 
-    // Step 2: Call service layer (which calls FastAPI → Ollama)
+    // Step 2: Call service layer with the message list (which calls FastAPI -> Ollama)
     // This returns a plain String like: "Hi there!"
-    String aiReply = noteService.askAI(userMessage);
+    String aiReply = noteService.askAI(messages);
 
-    // Step 3: Convert String → JSON response object
+    // Step 3: Convert String -> JSON response object
     // We do this so frontend always receives proper JSON
     ChatResponse response = new ChatResponse();
     response.setResponse(aiReply);
@@ -93,7 +96,4 @@ public class NoteController {
     return response;
     }
     
-    
-
-
 }

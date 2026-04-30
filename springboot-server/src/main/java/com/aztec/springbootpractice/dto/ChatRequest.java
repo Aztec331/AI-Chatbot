@@ -5,35 +5,39 @@
 // Defines what frontend sends to backend.
 package com.aztec.springbootpractice.dto;
 
-import javax.swing.Spring;
+import java.util.List;
 
 public class ChatRequest {
 
-    private String message;
+    private List<ChatMessage> messages;
 
-    public String getMessage(){
-        return message;
+    public List<ChatMessage> getMessages(){
+        return messages;
     }
 
-    public void setMessage(String message){
-        this.message= message;
+    public void setMessages(List<ChatMessage> messages){
+        this.messages= messages;
     }
 
-    // 🔹 Answer (core idea)
+// Answer (core idea)
 
-    // 👉 Spring does this automatically:
+    // Spring does this automatically:
 
-    // JSON field → object field
+    // JSON field -> object field
 
-    // 🔹 Mapping (IMPORTANT)
+    // Mapping (IMPORTANT)
 
-    // Postman sends:
+    // Frontend/Postman sends:
 
-    // { "message": "Hello AI" }
+    // {
+    //   "messages": [
+    //     { "role": "user", "content": "Hello AI" }
+    //   ]
+    // }
 
     // Spring converts to:
 
-    // request.message = "Hello AI"
+    // request.messages = List<ChatMessage>
     
 }
 
