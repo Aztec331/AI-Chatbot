@@ -3,14 +3,34 @@ from pydantic import BaseModel
 import ollama
 
 #this file directly calls the ollama library and creates an API endpoint for chat
-
 app = FastAPI()
 
-#Request model
-class ChatRequest(BaseModel):
-    message:str
+'''Springboot is sending fastapi a json body like this
+{
+  "messages": [
+    {
+      "role": "user",
+      "content": "Hello AI"
+    },
+    {
+      "role": "user",
+      "content": "What is Java?"
+    }
+  ]
+}'''
 
-#Response model
+#one single message object inside the messages list
+#example :
+#{"role":"user", "content":"Hello AI"}
+class ChatMessage(BaseModel):
+    role:str
+    content:str
+
+#Request model to validate the incoming request body for the /chat endpoint
+class ChatRequest(BaseModel):
+    messages: list[ChatMessage]
+
+#Response model to validate the outgoing response body for the /chat endpoint
 class ChatResponse(BaseModel):
     response:str
 
@@ -21,15 +41,42 @@ def home():
 # AI Chat Endpoint
 @app.post("/chat")
 def chat(request: ChatRequest):
-    #ChatRequest converts json into request.message = "Hello AI"
-    #here request.message = "Hello AI"
-    user_message = request.message
+    '''ChatRequest converts incoming JSON into request.messages
+    Example incoming JSON:
+    
+    {
+    "messages": [
+    {
+      "role": "user",
+      "content": "Hello AI"
+    },
+    {
+      "role": "assistant",
+      "content": "Hi there"
+    },
+    {
+      "role": "user",
+      "content": "What is Java?"
+    }
+    ]
+    }
 
-    #Cll Ollama
+    After conversion -> request.messages = list of ChatMessage objects
+    and it looks like this in python
+    request.messages = [
+    ChatMessage(role="user", content="Hello AI"),
+    ChatMessage(role="assistant", content="Hi there"),
+    ChatMessage(role="user", content="What is Python?")
+    ]'''
+
+    messages = [message.model_dump() for message in request.messages]
+
+
+    #Call Ollama with full conversation history
     ollama_response = ollama.chat(
         model = 'llama3',
         #below line is input to AI 
-        messages=[{"role":"user", "content":user_message}]
+        messages=messages
     )
 
     #below is the response you actually get from ollama
