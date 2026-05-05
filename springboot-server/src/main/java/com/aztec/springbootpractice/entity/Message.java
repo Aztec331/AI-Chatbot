@@ -1,3 +1,4 @@
+//Message Entity or Message table
 package com.aztec.springbootpractice.entity;
 
 import jakarta.persistence.Entity;
@@ -14,14 +15,19 @@ public class Message {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String role;
-    
-    private String content;
-
     @ManyToOne
     @JoinColumn(name = "chat_id")
     private Chat chat;
 
+    private String role;
+    
+    private String content;
+
+
+    // No-argument constructor required by JPA/Hibernate.
+    // It creates an empty object first.
+    // Then JPA fills the fields later while reading/saving data.
+    // We usually don't call this manually.
     public Message() {}
 
     public Long getId(){

@@ -1,3 +1,4 @@
+//Chat Entity or Chat table
 package com.aztec.springbootpractice.entity;
 
 import jakarta.persistence.Entity;
@@ -14,6 +15,10 @@ public class Chat {
 
     private String title;
 
+    // No-argument constructor required by JPA/Hibernate.
+    // It creates an empty object first.
+    // Then JPA fills the fields later while reading/saving data.
+    // We usually don't call this manually.
     public Chat() {}
 
     public Long getId(){
