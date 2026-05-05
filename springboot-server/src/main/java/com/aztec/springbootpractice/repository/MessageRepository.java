@@ -15,6 +15,12 @@ public interface MessageRepository extends JpaRepository<Message, Long> {
     //thats why we need to add this custom query method.
 
     // Custom query method to find messages by chat.
-    List<Message> findByChat(Chat chat);
+    //chatId is variable name and Long is its 
+    
+    // Spring reads chatId as chat.id
+    // First it looks at the chat field inside Message entity
+    // Then it goes into Chat entity and finds its id field
+    // So chatId here means: Message.chat.id
+    List<Message> findByChatIdOrderByIdAsc(Long chatId);
 
 }
