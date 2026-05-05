@@ -3,7 +3,6 @@ package com.aztec.springbootpractice.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import com.aztec.springbootpractice.entity.Message;
-import com.aztec.springbootpractice.entity.Chat;
 
 import java.util.List;
 
