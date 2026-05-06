@@ -6,7 +6,13 @@ import org.springframework.lang.NonNull;
 
 //CRUD file imports
 import com.aztec.springbootpractice.entity.Note;
+import com.aztec.springbootpractice.repository.ChatRepository;
+import com.aztec.springbootpractice.repository.MessageRepository;
 import com.aztec.springbootpractice.repository.NoteRepository;
+
+//import Entities or tables
+import com.aztec.springbootpractice.entity.Chat;
+import com.aztec.springbootpractice.entity.Message;
 
 //AI file imports and RestTemplate to call another API
 import org.springframework.web.client.RestTemplate;
@@ -19,15 +25,37 @@ import java.util.List;
 @Service
 public class NoteService {
 
-    // Stores a NoteRepository object (gives methods like save(), findAll())
-    // Not used to store data, only to access repository methods
-    // Type = NoteRepository (it holds a repository object with methods like save(), findAll())
-    //noteRepository = pre-filled object with ready-made database methods 👍
+    // At first, this field stores nothing.
+    // Later, Spring gives it a NoteRepository object through the constructor.
+    // This field stores that object so we can use methods like save() and findAll().
+    // The object is created by Spring, not by this class.
     private final NoteRepository noteRepository;
 
-    //Constructor for NoteService class
-    public NoteService(NoteRepository noteRepository) {
+    // At first, this field stores nothing.
+    // Later, Spring gives it a ChatRepository object through the constructor.
+    // This field stores that object so we can use methods like save() and findAll().
+    // The object is created by Spring, not by this class.
+    private final ChatRepository chatRepository;
+
+    // At first, this field stores nothing.
+    // Later, Spring gives it a MessageRepository object through the constructor.
+    // This field stores that object so we can use methods like save() and findAll().
+    // The object is created by Spring, not by this class.
+    private final MessageRepository messageRepository;
+
+    //Constructor for NoteService class with 3 parameters
+    public NoteService(
+        NoteRepository noteRepository,
+        ChatRepository chatRepository,
+        MessageRepository messageRepository
+
+    ) {
+        //Store the incoming NoteRepository object in the class field
         this.noteRepository = noteRepository;
+        //Store the incoming ChatRepository object in the class field
+        this.chatRepository = chatRepository;
+        //Store the incoming MessageRepository object in the class field
+        this.messageRepository = messageRepository;
     }
 
     //function type Note which returns a note object
@@ -100,6 +128,32 @@ public class NoteService {
         return response != null ? response.getResponse(): "Error: No response from AI";
 
     }
+    
+    //save one chat to the database using chat repository
+    //@NonNull means this function must strictly receive a chat object, it cannot be null
+    public Chat saveChat(@NonNull Chat chat) {
+    return chatRepository.save(chat);
+    }
+
+    //save one message to the database using message repository
+    //@NonNull means this function must strictly receive a message object, it cannot be null
+    public Message saveMessage(@NonNull Message message) {
+    return messageRepository.save(message);
+    }
+
+    //to load all chats from the database using chat repository
+    public List<Chat> getAllChats() {
+    return chatRepository.findAll();
+    }
+
+    //to load all messages of one chat
+    public List<Message> getMessagesByChatId(Long chatId) {
+    return messageRepository.findByChatIdOrderByIdAsc(chatId);
+    }
+
+
+
+
 
 
 
