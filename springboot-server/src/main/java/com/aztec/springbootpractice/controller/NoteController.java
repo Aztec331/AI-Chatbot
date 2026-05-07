@@ -9,8 +9,12 @@ import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.*;
 
 //file imports
-import com.aztec.springbootpractice.entity.Note;
 import com.aztec.springbootpractice.service.NoteService;
+
+//Entities or tables imports
+import com.aztec.springbootpractice.entity.Note;
+import com.aztec.springbootpractice.entity.Chat;
+import com.aztec.springbootpractice.entity.Message;
 
 //AI file imports
 import com.aztec.springbootpractice.dto.ChatRequest;
@@ -68,6 +72,7 @@ public class NoteController {
         noteService.deleteNote(id);
     }
 
+    
     // POST request to send chat messages to AI
     // URL -> http://localhost:8080/api/chat
     // This method receives this from frontend:
@@ -97,5 +102,62 @@ public class NoteController {
     }
 
 
+
+    // POST request to save a chat in database
+    // URL -> http://localhost:8080/api/chats
+    // This method receives this from frontend:
+    // { "title": "New Chat" }
+    // This method sends this back to frontend after saving:
+    // { "id": 1, "title": "New Chat" }
+    @PostMapping("/chats")
+    public Chat saveChat( @NonNull @RequestBody Chat chat ){
+        // controller return this Chat object
+        // Chat
+        // id = 1
+        // title = "Python doubts"
+        return noteService.saveChat(chat);
+
+    }
+
+    //Post request to save a message based on a chat id
+    @PostMapping("/chats/{chatId}/messages")
+    public Message saveMessage(@PathVariable Long chatId, @RequestBody Message message) {
+
+    //creats a new empty chat object
+    Chat chat = new Chat();
+
+    //this sets chatId as 1 for the empty chat object that u created above
+    chat.setId(chatId);
+
+    //take the chat object that you created above
+    //and put it inside the message object's chat field 
+    message.setChat(chat);
+
+    //after the above line message object becomes 
+    // message object
+    // id = null
+    // role = "user"
+    // content = "What is Python?"
+    // chat = Chat(id=1, title=null)
+
+
+    return noteService.saveMessage(message);
+    }
+
+    //get a List with multiple Chat objects
+    @GetMapping("/chats")
+    public List<Chat> getAllChats(){
+        return noteService.getAllChats();        
+    }
+
+    //get a list of 
+    @GetMapping("/chats/{chatId}/messages")
+    public List<Message> getMessagesByChatId( @PathVariable Long chatId ){
+        return noteService.getMessagesByChatId(chatId);
+    }
+
+
+
+   
     
 }

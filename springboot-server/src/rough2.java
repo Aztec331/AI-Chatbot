@@ -1,16 +1,23 @@
-import java.util.ArrayList;
-import java.util.List;
+@PostMapping("/chats/{chatId}/messages")
+public Message saveMessage(@PathVariable Long chatId, @RequestBody Message message) {
 
-public class rough2 {
+    //creats a new empty chat object
+    Chat chat = new Chat();
 
-    public static void main(String[] args) {
+    //this sets chatId as 1 for the empty chat object that u created above
+    chat.setId(chatId);
 
-        List<String> items = new ArrayList<>();
-        items.add("Apple");
-        items.add("Banana");
-        items.add("Orange");
-        items.add("Mango");
+    //take the chat object that you created above
+    //and put it inside the message object's chat field 
+    message.setChat(chat);
 
-        System.out.println("List Items: " + items);
-    }
+    //after the above line message object becomes 
+    // message object
+    // id = null
+    // role = "user"
+    // content = "What is Python?"
+    // chat = Chat(id=1, title=null)
+
+
+    return noteService.saveMessage(message);
 }

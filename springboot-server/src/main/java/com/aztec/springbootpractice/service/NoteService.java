@@ -4,13 +4,13 @@ package com.aztec.springbootpractice.service;
 import org.springframework.stereotype.Service;
 import org.springframework.lang.NonNull;
 
-//CRUD file imports
-import com.aztec.springbootpractice.entity.Note;
+//Repositories imports to access database tables
 import com.aztec.springbootpractice.repository.ChatRepository;
 import com.aztec.springbootpractice.repository.MessageRepository;
 import com.aztec.springbootpractice.repository.NoteRepository;
 
 //import Entities or tables
+import com.aztec.springbootpractice.entity.Note;
 import com.aztec.springbootpractice.entity.Chat;
 import com.aztec.springbootpractice.entity.Message;
 
@@ -128,11 +128,16 @@ public class NoteService {
         return response != null ? response.getResponse(): "Error: No response from AI";
 
     }
-    
+
     //save one chat to the database using chat repository
     //@NonNull means this function must strictly receive a chat object, it cannot be null
     public Chat saveChat(@NonNull Chat chat) {
+    //service retuns this chat object
+    //Chat
+    //id = 1
+    //title = "Python doubts"
     return chatRepository.save(chat);
+
     }
 
     //save one message to the database using message repository
