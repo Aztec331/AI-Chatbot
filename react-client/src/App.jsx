@@ -1,5 +1,5 @@
 import logo from './images/aztec_main.png'
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 
 export default function App() {
 
@@ -22,6 +22,43 @@ export default function App() {
 
   //store the current input value what user is typing in the input field
   const [input, setInput] = useState("");
+
+  
+  //useEffect function to call all the chats automatically
+  useEffect(
+    () =>{
+
+    const loadChats = async () =>{
+    try{
+    const res = await fetch("http://localhost:8080/api/chats");
+    //data contains the list
+    const data = await res.json();
+
+    const chatsWithMessages = data.map( (chat) => ({
+      ...chat,
+      messages:[],
+
+    }));
+
+    setChats(chatsWithMessages);
+
+    if(chatsWithMessages.length>0){
+      setCurrentChatId( chatsWithMessages[0].id );
+    }
+    }
+    //if api fails show error
+    catch(error){
+      console.error("Failed to load chats", error);
+    }
+
+    };
+
+    loadChats();
+
+    },[])
+
+
+
   
 
   //creates a new chat object with unique id, default title, and empty messages array.
